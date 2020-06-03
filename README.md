@@ -1,1 +1,1 @@
-# paschalisitsios
+# Covid-19 scans
