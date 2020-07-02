@@ -3,7 +3,7 @@ import cv2
 
 img=cv2.imread("C://Users//itsios//Desktop//dissertation//train//train_covid//Covid (1).png")
 
-#this makes the image from (202,256,3) to (51712 )
+#this converts the image from (202,256,3) to (51712,3 )
 img2= img.reshape((-1,3))
 
 from sklearn.mixture import GaussianMixture as GMM
