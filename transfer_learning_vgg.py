@@ -133,7 +133,11 @@ print(cm)
 #L1 AND L2 REGULARIZATION
 #FINE TUNING ONE MORE CONVOLUTIONAL BLOCK
 
+#get the layers output (tensors)
+flatten=model.layers[18].output
+fc_layer=model.layers[20].output
 
-#extract the values of the fc2 layer and save it
+
+#extract the weights of the fc2 layer and save it
 maybe=model.layers[21].get_weights()
 maybe2=maybe[0]
