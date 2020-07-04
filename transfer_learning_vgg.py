@@ -3,11 +3,10 @@
 
 from numpy.random import seed
 seed(101)
-from tensorflow import set_random_seed
-set_random_seed(101)
 import pandas as pd
 import numpy as np
-import tensorflow
+import tensorflow as tf
+import keras
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.metrics import categorical_crossentropy
@@ -78,24 +77,31 @@ valid_batches=ImageDataGenerator(preprocessing_function=keras.applications.vgg16
 test_batches=ImageDataGenerator(preprocessing_function=keras.applications.vgg16.preprocess_input) \
     .flow_from_directory(directory=test_path,target_size=(224,224),classes=['Covid','Non-Covid'],batch_size=10,shuffle=False)
 
-###
+# import the vgg16 architecture
 vgg16_model=keras.applications.vgg16.VGG16()
 vgg16_model.summary()
 
-type(vgg16_model)
 # put out the last layer with the predictions
-model= Sequential()
+model= tf.keras.Sequential()
+
+#or
+model= keras.Sequential()
+
+#freeze the last layer of vgg16 which has 1000 labels
 for layer in vgg16_model.layers[:-1]:
     model.add(layer)
 
-model.summary()
 
-
-#
+#transfer learning
 for layer in model.layers:
     layer.trainable=False
     
+#covid or non-covid
 model.add(Dense(units=2,activation='softmax'))
+
+#run the next command if you want to load the greyscale weights
+checkpoint_path = "C:\\Users\\itsios\\Desktop\\dissertation\\checkpoints\\model.ckpt-1495066"
+model.load_weights(checkpoint_path)
 
 #now our model has only 2 classes instead of 1000 of
 #vgg16 and the trainable parameters reduced and 
@@ -106,12 +112,13 @@ model.summary()
 #train the fine -tuned vgg16 model
 
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+
 #fit our model
-model.fit(x=train_batches,validation_data=valid_batches,epochs=2,verbose=2)
+model.fit(x=train_batches,validation_data=valid_batches,epochs=3,verbose=2)
 
 #predict
 predictions=model.predict(x=test_batches,verbose=0)
-
+model.summary()
 #check the classes 
 test_batches.classes
 test_batches.class_indices
@@ -120,11 +127,13 @@ test_batches.class_indices
 cm=confusion_matrix(y_true=test_batches.classes,y_pred=np.argmax(predictions,axis=-1))
 print(cm)
 
-cm_plot_labels=['cat','dog']
-
-plot_confusion_matrix(cm=cm,classes=cm_plot_labels,title='ConfusionMatrix')
 
 #to improve the results we can do DATA AUGMENTATION
 #MORE AGGRESIVE DROPOUT
 #L1 AND L2 REGULARIZATION
 #FINE TUNING ONE MORE CONVOLUTIONAL BLOCK
+
+
+#extract the values of the fc2 layer and save it
+maybe=model.layers[21].get_weights()
+maybe2=maybe[0]
