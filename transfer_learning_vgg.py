@@ -158,3 +158,26 @@ result = flatten_output(image)
                                            
 print('Flatten layer outputs:', result)
 print('Shape:', result.shape)
+                                       
+#import image
+rot=tf.keras.preprocessing.image.load_img('/content/drive/My Drive/trainn/train/Covid/Covid (1001).png',target_size=(224,224))
+
+#import pil
+from PIL import Image
+
+#transform image to numpy array
+
+img = tf.keras.preprocessing.image.array_to_img(rot)
+array = tf.keras.preprocessing.image.img_to_array(img)
+data_np = np.asarray(array, np.float32)
+
+#tranfrorm numpy to tensor
+data_tf = tf.convert_to_tensor(data_np, np.float32)
+#prepare image to fit the output
+new_image = tf.expand_dims(data_tf,0)
+
+#fully connected layer output 
+result_fc2=fc2_output(new_image)
+print('FC2 layer outputs:', result_fc2)
+print('Shape:', result_fc2.shape)
+                                       
