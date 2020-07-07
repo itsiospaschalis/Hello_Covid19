@@ -147,7 +147,11 @@ maybe2=maybe[0]
 import tensorflow as tf
 
 vgg16 = tf.keras.applications.VGG16()
+#flatten layer
 flatten_output = tf.keras.backend.function(model.input, model.get_layer('flatten').out
+#fully-connected2 layer    
+fc2_output = tf.keras.backend.function(model.input, model.get_layer('fc2').out
+                                          
                                            
 image=train_batches[1]
 result = flatten_output(image)
