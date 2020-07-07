@@ -141,3 +141,16 @@ fc_layer=model.layers[20].output
 #extract the weights of the fc2 layer and save it
 maybe=model.layers[21].get_weights()
 maybe2=maybe[0]
+
+
+#
+import tensorflow as tf
+
+vgg16 = tf.keras.applications.VGG16()
+flatten_output = tf.keras.backend.function(model.input, model.get_layer('flatten').out
+                                           
+image=train_batches[1]
+result = flatten_output(image)
+                                           
+print('Flatten layer outputs:', result)
+print('Shape:', result.shape)
