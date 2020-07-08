@@ -148,9 +148,9 @@ import tensorflow as tf
 
 vgg16 = tf.keras.applications.VGG16()
 #flatten layer
-flatten_output = tf.keras.backend.function(model.input, model.get_layer('flatten').out
+flatten_output = tf.keras.backend.function(model.input, model.get_layer('flatten').output)
 #fully-connected2 layer    
-fc2_output = tf.keras.backend.function(model.input, model.get_layer('fc2').out
+fc2_output = tf.keras.backend.function(model.input, model.get_layer('fc2').output)
                                           
                                            
 image=train_batches[1]
@@ -180,4 +180,28 @@ new_image = tf.expand_dims(data_tf,0)
 result_fc2=fc2_output(new_image)
 print('FC2 layer outputs:', result_fc2)
 print('Shape:', result_fc2.shape)
-                                       
+                                                                              
+
+import tensorflow as tf
+
+vgg16 = tf.keras.applications.VGG16()
+flatten_output = tf.keras.backend.function(model.input, model.get_layer('flatten').output)
+fc2_output = tf.keras.backend.function(model.input, model.get_layer('fc2').output)
+
+
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+
+y=[]
+for i in range(1,11):
+    gray=cv2.resize(images[i],(224,224))
+    y.append(gray)
+
+
+list=tf.convert_to_tensor(y)
+
+list2=fc2_output(list)
+
+import pandas as pd
+
+test1=pd.DataFrame(list2)
