@@ -44,3 +44,42 @@ plt.ylabel('Explained variance ratio')
 plt.xlabel('Component')
 plt.savefig("Figure2.png")
 plt.show()
+
+
+
+#extract FC2 LAYER
+
+
+
+from keras.applications.vgg16 import VGG16
+# example of using the vgg16 model as a feature extraction model
+from keras.preprocessing.image import load_img
+from keras.preprocessing.image import img_to_array
+from keras.applications.vgg16 import preprocess_input
+from keras.applications.vgg16 import decode_predictions
+from keras.applications.vgg16 import VGG16
+from keras.models import Model
+model1 = VGG16()
+model1.layers.pop()
+model1 = Model(inputs=model1.inputs, outputs=model1.layers[-1].output)
+features = model1.predict(train_batches)
+
+test2=pd.DataFrame(features)
+
+#PCA for extracted fc2 layer
+
+from sklearn . decomposition import PCA
+
+pca = PCA(n_components =5)
+pca.fit ( test2 )
+Coeff = pca. components_
+print(Coeff)
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.plot(list(pca.explained_variance_ratio_),'-o')
+plt.title('Explained variance ratio as function of PCA components')
+plt.ylabel('Explained variance ratio')
+plt.xlabel('Component')
+plt.savefig("Figure2.png")
+plt.show()
