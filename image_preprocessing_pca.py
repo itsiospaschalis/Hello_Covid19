@@ -84,3 +84,9 @@ plt.ylabel('Explained variance ratio')
 plt.xlabel('Component')
 plt.savefig("Figure2.png")
 plt.show()
+
+
+#see how many components we need in order to achive 70 % variance explainability
+# Indices corresponding to the first occurrence are returned with the np.argmax function
+# Adding 1 to the end of value in list as principal components start from 1 and indexes start from 0 (np.argmax)
+componentsVariance = [499, np.argmax(cum_var_exp > 99) + 1, np.argmax(cum_var_exp > 95) + 1, np.argmax(cum_var_exp > 90) + 1, np.argmax(cum_var_exp >= 70) + 1]
