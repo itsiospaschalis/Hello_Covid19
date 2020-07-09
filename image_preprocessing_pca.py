@@ -64,8 +64,9 @@ model1.layers.pop()
 model1 = Model(inputs=model1.inputs, outputs=model1.layers[-1].output)
 features = model1.predict(train_batches)
 
-test2=pd.DataFrame(features)
-
+a=(features[1:500])
+test2=pd.DataFrame(a)
+#now test2 and df has 500 samples
 #PCA for extracted fc2 layer
 
 from sklearn . decomposition import PCA
