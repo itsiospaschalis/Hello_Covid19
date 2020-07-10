@@ -93,6 +93,19 @@ componentsVariance = [499, np.argmax(cum_var_exp > 99) + 1, np.argmax(cum_var_ex
 
 
 ######################################################################## project the original and compressed image #################################################################
+import cv2
+import glob
+train_x_covid = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+train_x_noncovid=[cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
+train_x_covid=np.array(train_x_covid)
+train_x_noncovid=np.array(train_x_noncovid)
+
+train_y_covid=[1] * 500
+train_y_noncovid=[0]*500
+
+train_x=np.concatenate((train_x_covid,train_x_noncovid))
+train_y=np.concatenate((train_y_covid,train_y_noncovid))
+
 
 y=[]
 
