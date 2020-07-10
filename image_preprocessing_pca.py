@@ -90,3 +90,36 @@ plt.show()
 # Indices corresponding to the first occurrence are returned with the np.argmax function
 # Adding 1 to the end of value in list as principal components start from 1 and indexes start from 0 (np.argmax)
 componentsVariance = [499, np.argmax(cum_var_exp > 99) + 1, np.argmax(cum_var_exp > 95) + 1, np.argmax(cum_var_exp > 90) + 1, np.argmax(cum_var_exp >= 70) + 1]
+
+
+######################################################################## project the original and compressed image #################################################################
+
+y=[]
+
+for i in range(1,1000):
+    gray=cv2.resize(train_x[i],(224,224))
+    gray = cv2.cvtColor(gray,cv2.COLOR_BGR2GRAY)
+    gray = gray.flatten()
+    y.append(gray)
+
+
+
+from sklearn.decomposition import PCA
+pca_dims = PCA()
+pca_dims.fit(y)
+cumsum = np.cumsum(pca_dims.explained_variance_ratio_)
+d = np.argmax(cumsum >= 0.70) + 1
+
+pca = PCA(n_components=d)
+X_reduced = pca.fit_transform(y)
+X_recovered = pca.inverse_transform(X_reduced)
+
+f = plt.figure()
+f.add_subplot(1,2, 1)
+plt.title("original")
+plt.imshow(y[0].reshape((224,224)))
+f.add_subplot(1,2, 2)
+
+plt.title("PCA compressed")
+plt.imshow(X_recovered[0].reshape((224,224)))
+plt.show(block=True)
