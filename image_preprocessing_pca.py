@@ -87,6 +87,7 @@ plt.show()
 
 
 #see how many components we need in order to achive 70 % variance explainability
+https://github.com/mGalarnyk/Python_Tutorials/blob/master/Sklearn/PCA/PCA_Image_Reconstruction_and_such.ipynb
 # Indices corresponding to the first occurrence are returned with the np.argmax function
 # Adding 1 to the end of value in list as principal components start from 1 and indexes start from 0 (np.argmax)
 componentsVariance = [499, np.argmax(cum_var_exp > 99) + 1, np.argmax(cum_var_exp > 95) + 1, np.argmax(cum_var_exp > 90) + 1, np.argmax(cum_var_exp >= 70) + 1]
