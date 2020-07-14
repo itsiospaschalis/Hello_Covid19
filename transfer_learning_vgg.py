@@ -92,7 +92,7 @@ for layer in vgg16_model.layers[:-1]:
     model.add(layer)
 
 
-#transfer learning
+#freazing the layers
 for layer in model.layers:
     layer.trainable=False
     
