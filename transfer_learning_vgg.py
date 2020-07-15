@@ -205,3 +205,27 @@ list2=fc2_output(list)
 import pandas as pd
 
 test1=pd.DataFrame(list2)
+
+
+#15/7/2020
+# let's freeze the feature extractor layers and train with the train_batches the flatten,fc and prediction layer
+model= Sequential()
+for layer in vgg16_model.layers[:-5]:
+    model.add(layer)
+for layer in model.layers:
+    layer.trainable=False
+    
+# compile the model (should be done *after* setting layers to non-trainable)
+model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
+
+
+model.add(MaxPool2D())
+model.add(Flatten())
+model.add(Dense(units=4096,activation='softmax'))
+model.add(Dense(units=2,activation='softmax'))    
+
+
+#train the fine -tuned vgg16 model
+model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+#fit our model
+model.fit(x=train_batches,validation_data=valid_batches,epochs=1,verbose=2)
