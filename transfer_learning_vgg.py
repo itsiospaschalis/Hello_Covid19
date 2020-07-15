@@ -229,3 +229,14 @@ model.add(Dense(units=2,activation='softmax'))
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 #fit our model
 model.fit(x=train_batches,validation_data=valid_batches,epochs=1,verbose=2)
+
+# put the images from train set to extract the features ( pleon ta flatten, fc2, and predict) exoun ekpaideutei me tis fwto moy 
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+y1=[]
+for i in range(1,100):
+    gray=cv2.resize(images[i],(224,224))
+    y1.append(gray)
+list=tf.convert_to_tensor(y1)
+list1=flatten_output(list)
+pd_list1=pd.DataFrame(list1)
