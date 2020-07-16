@@ -294,7 +294,7 @@ model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accurac
 
 model.fit(x=train_batches,validation_data=valid_batches,epochs=20,verbose=2)
 
-
+fc2_output = tf.keras.backend.function(model.input, model.get_layer('fc2').output)
 
 
 import cv2
