@@ -207,8 +207,11 @@ import pandas as pd
 test1=pd.DataFrame(list2)
 
 
-#15/7/2020
+###########################################################15/7/2020 ( unfreeze the 5 final layer and train them with our images)
+
 # let's freeze the feature extractor layers and train with the train_batches the flatten,fc and prediction layer
+# let's freeze the feature extractor layers and train with the train_batches the flatten,fc and prediction layer
+vgg16_model=keras.applications.vgg16.VGG16()
 model= Sequential()
 for layer in vgg16_model.layers[:-5]:
     model.add(layer)
@@ -221,14 +224,17 @@ model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
 
 model.add(MaxPool2D())
 model.add(Flatten())
-model.add(Dense(units=4096,activation='softmax'))
+model.add(Dense(units=4096,activation='relu'))
+model.add(Dense(units=4096,activation='relu'))
 model.add(Dense(units=2,activation='softmax'))    
-
 
 #train the fine -tuned vgg16 model
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 #fit our model
-model.fit(x=train_batches,validation_data=valid_batches,epochs=1,verbose=2)
+model.fit(x=train_batches,validation_data=valid_batches,epochs=20,verbose=2)
+
+##### extract the fc2 layer ("dense6) 
+fc2_output = tf.keras.backend.function(model.input, model.get_layer('dense_6').output)
 
 # put the images from train set to extract the features ( pleon ta flatten, fc2, and predict) exoun ekpaideutei me tis fwto moy 
 import cv2
@@ -261,3 +267,66 @@ from google.colab import files
 
 greez.to_csv('greez.csv')
 files.download('greez.csv')
+
+
+
+########################################## train only the last layer with our dataset ################
+#from tensorflow import keras
+#from tensorflow.keras.models import Sequential
+#from tensorflow.keras.layers import Activation,Dense,Flatten,BatchNormalization,Conv2D,MaxPool2D
+#from tensorflow.keras.metrics import categorical_crossentropy
+#from tensorflow.keras.preprocessing.image import ImageDataGenerator
+vgg16_model=keras.applications.vgg16.VGG16()
+
+model= keras.Sequential()
+for layer in vgg16_model.layers[:-1]:
+    model.add(layer)
+
+for layer in model.layers:
+    layer.trainable=False
+
+model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+
+model.add(Dense(units=2,activation='softmax'))
+
+
+model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+
+model.fit(x=train_batches,validation_data=valid_batches,epochs=20,verbose=2)
+
+
+
+
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
+y555=[]
+for i in range(1,200):
+    gray=cv2.resize(images[i],(224,224))  
+    y555.append(gray)
+list_555=tf.convert_to_tensor(y555)
+list556=fc2_output(list_555)
+list_557=pd.DataFrame(list556)
+
+
+
+
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
+y777=[]
+for i in range(1,200):
+    gray=cv2.resize(images[i],(224,224))  
+    y777.append(gray)
+
+list777=tf.convert_to_tensor(y777)
+list778=fc2_output(list777)
+list779=pd.DataFrame(list778)
+
+
+first = list779.append(list_557)
+
+###  save "first"  ###
+from google.colab import files
+
+first.to_csv('first.csv')
+files.download('first.csv')
+
