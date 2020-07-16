@@ -158,7 +158,9 @@ result = flatten_output(image)
                                            
 print('Flatten layer outputs:', result)
 print('Shape:', result.shape)
-                                       
+
+
+######################################################## I did not use this method ########################################
 #import image
 rot=tf.keras.preprocessing.image.load_img('/content/drive/My Drive/trainn/train/Covid/Covid (1001).png',target_size=(224,224))
 
@@ -181,7 +183,10 @@ result_fc2=fc2_output(new_image)
 print('FC2 layer outputs:', result_fc2)
 print('Shape:', result_fc2.shape)
                                                                               
+################################################ FINISH I did not use this method ######################################################
 
+
+################################################# initial trials ,better go to line 215 to see the 2 methods ################
 import tensorflow as tf
 
 vgg16 = tf.keras.applications.VGG16()
@@ -206,10 +211,11 @@ import pandas as pd
 
 test1=pd.DataFrame(list2)
 
+##############################                FINISH             ################### initial trials ,better go to line 215 to see the 2 methods ################
+
 
 ###########################################################15/7/2020 ( unfreeze the 5 final layer and train them with our images)
-
-# let's freeze the feature extractor layers and train with the train_batches the flatten,fc and prediction layer
+############################ FIRST APPROACH #######################################
 # let's freeze the feature extractor layers and train with the train_batches the flatten,fc and prediction layer
 vgg16_model=keras.applications.vgg16.VGG16()
 model= Sequential()
@@ -268,8 +274,12 @@ from google.colab import files
 greez.to_csv('greez.csv')
 files.download('greez.csv')
 
+############################################ FINISH 1ST APPROACH 3#########################################
 
 
+
+
+#######################################    SECOND APPROACH              ###########################
 ########################################## train only the last layer with our dataset ################
 #from tensorflow import keras
 #from tensorflow.keras.models import Sequential
