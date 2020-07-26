@@ -340,3 +340,23 @@ from google.colab import files
 first.to_csv('first.csv')
 files.download('first.csv')
 
+#plot the performance metrics
+history=model.fit(x=train_batches,validation_data=valid_batches,epochs=15,verbose=2)
+test_loss, test_acc = model.evaluate(test_batches)
+
+# summarize history for accuracy
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'val_accuracy'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()
