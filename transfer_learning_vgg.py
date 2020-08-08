@@ -361,7 +361,8 @@ plt.xlabel('epoch')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
 
-##################################### new exp ##############################
+##################################### new exp ##############################   it is saved as 'dokimi' at colab #########
+
 # implement dropout to the pretrained with imagenet model which has learnt with covid dataset the five last layers
 
 vgg16_model=keras.applications.vgg16.VGG16()
