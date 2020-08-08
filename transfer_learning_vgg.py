@@ -432,3 +432,14 @@ print('Recall: %f' % recall)
 f1 = f1_score(y_actual, yhat_classes)
 print('F1 score: %f' % f1)
 
+## PLOT THE CONFUSION MATRIX ##
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+
+cm = confusion_matrix(y_actual,yhat_classes)
+f, ax = plt.subplots(figsize =(5,5))
+sns.heatmap(cm,annot = True,linewidths=0.5,linecolor="red",fmt = ".0f",ax=ax)
+plt.xlabel("y_pred_lr")
+plt.ylabel("y_true_lr")
+plt.savefig("confusion matrix mushrooms")
+plt.show()
