@@ -407,3 +407,28 @@ plt.xlabel('epoch')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
 ################################# finish new exp ############################################
+
+#################################### calculate metrics ###########
+
+#extract predict classes y of test set ######
+yhat_classes = model.predict_classes(test_batches, verbose=0)
+
+#extract actual classes y of test set ######
+y_actual=test_batches.classes
+
+# accuracy: (tp + tn) / (p + n)
+from sklearn.metrics import precision_score, recall_score, accuracy_score, classification_report,f1_score
+from sklearn.metrics import roc_auc_score , classification_report
+
+accuracy = accuracy_score(y_actual, yhat_classes)
+print('Accuracy: %f' % accuracy)
+# precision tp / (tp + fp)
+precision = precision_score(y_actual, yhat_classes)
+print('Precision: %f' % precision)
+# recall: tp / (tp + fn)
+recall = recall_score(y_actual, yhat_classes)
+print('Recall: %f' % recall)
+# f1: 2 tp / (2 tp + fp + fn)
+f1 = f1_score(y_actual, yhat_classes)
+print('F1 score: %f' % f1)
+
