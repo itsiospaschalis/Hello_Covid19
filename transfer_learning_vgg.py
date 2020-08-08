@@ -360,3 +360,49 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
+
+##################################### new exp ##############################
+# implement dropout to the pretrained with imagenet model which has learnt with covid dataset the five last layers
+
+vgg16_model=keras.applications.vgg16.VGG16()
+model= Sequential()
+for layer in vgg16_model.layers[:-5]:
+    model.add(layer)
+for layer in model.layers:
+    layer.trainable=False
+    
+# compile the model (should be done *after* setting layers to non-trainable)
+model.compile(optimizer='adam', loss='categorical_crossentropy',metrics=['accuracy'])
+dropout1 = tf.keras.layers.Dropout(0.5)
+dropout2 = tf.keras.layers.Dropout(0.5)
+model.add(MaxPool2D())
+model.add(Flatten())
+
+model.add(Dense(units=4096,activation='relu'))
+model.add(dropout1)
+model.add(Dense(units=4096,activation='relu'))
+model.add(dropout2)
+model.add(Dense(units=2,activation='softmax')) 
+
+model.compile(optimizer='adam', loss='categorical_crossentropy',metrics=['accuracy'])
+
+history=model.fit(x=train_batches,validation_data=valid_batches,epochs=15,verbose=2)
+test_loss, test_acc = model.evaluate(test_batches)
+
+# summarize history for accuracy
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'val_accuracy'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'validation'], loc='upper left')
+plt.show()
+################################# finish new exp ############################################
