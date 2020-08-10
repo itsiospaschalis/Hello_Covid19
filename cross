@@ -1,1 +1,40 @@
+import cv2
+import glob
+train_x_covid = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+train_x_noncovid=[cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
+train_x_covid=np.array(train_x_covid)
+train_x_noncovid=np.array(train_x_noncovid)
+
+train_y_covid=[1] * 500
+train_y_noncovid=[0]*500
+
+train_x=np.concatenate((train_x_covid,train_x_noncovid))
+train_y=np.concatenate((train_y_covid,train_y_noncovid))
+
+
+
+from sklearn.model_selection import StratifiedKFold
+
+kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
+cvscores = []
+for train, test in kfold.split(train_x, train_y):
+  # create model
+  model= keras.Sequential()
+  for layer in vgg16_model.layers[:-1]:
+    model.add(layer)
+  #freazing the layers
+  for layer in model.layers:
+    layer.trainable=False
+    
+#covid or non-covid
+  model.add(Dense(units=2,activation='softmax'))
+  model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
+#fit our model
+  model.fit(x=train_batches,validation_data=valid_batches,epochs=3,verbose=2)
+	# evaluate the model
+	scores = model.evaluate(train_x[test], train_x[test], verbose=0)
+	print("%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+	cvscores.append(scores[1] * 100)
+print("%.2f%% (+/- %.2f%%)" % (numpy.mean(cvscores), numpy.std(cvscores)))
+
 
