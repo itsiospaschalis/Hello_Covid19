@@ -432,6 +432,26 @@ print('Recall: %f' % recall)
 f1 = f1_score(y_actual, yhat_classes)
 print('F1 score: %f' % f1)
 
+#plot the roc curve
+
+from sklearn.metrics import precision_score, recall_score, accuracy_score, classification_report,f1_score
+from sklearn.metrics import roc_auc_score , classification_report
+from sklearn.metrics import roc_curve,roc_auc_score
+
+auc=roc_auc_score(y_actual, yhat_classes)
+print('AUC: %.2f' % auc)
+def plot_roc_curve(fpr, tpr):
+    plt.plot(fpr, tpr, color='orange', label='ROC')
+    plt.plot([0, 1], [0, 1], color='darkblue', linestyle='--')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic (ROC) Curve')
+    plt.legend()
+    plt.savefig("roc curve mushroom.png")
+    plt.show()
+fpr,tpr,thresholds=roc_curve(y_actual,yhat_classes)
+plot_roc_curve(fpr,tpr)
+
 ## PLOT THE CONFUSION MATRIX ##
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
@@ -443,3 +463,10 @@ plt.xlabel("y_pred_lr")
 plt.ylabel("y_true_lr")
 plt.savefig("confusion matrix mushrooms")
 plt.show()
+
+
+# new dataset compare metrics# 
+test_path_2='/content/drive/My Drive/test_2'
+
+test_batches_2=ImageDataGenerator(preprocessing_function=keras.applications.vgg16.preprocess_input) \
+    .flow_from_directory(directory=test_path_2,target_size=(224,224),classes=['Covid','Non-Covid'],batch_size=10,shuffle=False)
