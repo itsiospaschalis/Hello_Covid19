@@ -114,7 +114,7 @@ model.summary()
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
 #fit our model
-model.fit(x=train_batches,validation_data=valid_batches,epochs=3,verbose=2)
+history=model.fit(x=train_batches,validation_data=valid_batches,epochs=3,verbose=2)
 
 #predict
 predictions=model.predict(x=test_batches,verbose=0)
@@ -127,6 +127,19 @@ test_batches.class_indices
 cm=confusion_matrix(y_true=test_batches.classes,y_pred=np.argmax(predictions,axis=-1))
 print(cm)
 
+
+#fine-tuning#
+# Unfreeze the base model
+model.trainable = True
+
+# It's important to recompile your model after you make any changes
+# to the `trainable` attribute of any inner layer, so that your changes
+# are take into account
+
+model.compile(optimizer=keras.optimizers.Adam(1e-5),loss='categorical_crossentropy',metrics=['accuracy'])
+
+# Train end-to-end. Be careful to stop before you overfit!
+history1=model.fit(x=train_batches,validation_data=valid_batches,epochs=30,verbose=2)
 
 #to improve the results we can do DATA AUGMENTATION
 #MORE AGGRESIVE DROPOUT
