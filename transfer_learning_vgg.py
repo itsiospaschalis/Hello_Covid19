@@ -292,7 +292,7 @@ files.download('greez.csv')
 
 
 
-#######################################    SECOND APPROACH              ###########################
+#######################################    SECOND APPROACH  to extract features          ###########################
 ########################################## train only the last layer with our dataset ################
 #from tensorflow import keras
 #from tensorflow.keras.models import Sequential
@@ -315,43 +315,83 @@ model.add(Dense(units=2,activation='softmax'))
 
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
-model.fit(x=train_batches,validation_data=valid_batches,epochs=20,verbose=2)
+history=model.fit(x=train_batches,validation_data=valid_batches,epochs=20,verbose=2)
 
 fc2_output = tf.keras.backend.function(model.input, model.get_layer('fc2').output)
 
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+y=[]
+for i in range(1,100):
+    gray=cv2.resize(images[i],(224,224))
+    y.append(gray)
+list_cov_k=tf.convert_to_tensor(y)
+list11_k=fc2_output(list_cov_k)
+pd_list_cov_k=pd.DataFrame(list11_k)
+
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+y=[]
+for i in range(100,199):
+    gray=cv2.resize(images[i],(224,224))
+    y.append(gray)
+list_cov_l=tf.convert_to_tensor(y)
+list11_l=fc2_output(list_cov_l)
+pd_list_cov_l=pd.DataFrame(list11_l)
+
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+y=[]
+for i in range(199,300):
+    gray=cv2.resize(images[i],(224,224))
+    y.append(gray)
+list_cov_m=tf.convert_to_tensor(y)
+list11_m=fc2_output(list_cov_m)
+pd_list_cov_m=pd.DataFrame(list11_m)
+
+pd_list_cov=pd.concat([pd_list_cov_k, pd_list_cov_l,pd_list_cov_m])
 
 import cv2
 images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
-y555=[]
-for i in range(1,200):
-    gray=cv2.resize(images[i],(224,224))  
-    y555.append(gray)
-list_555=tf.convert_to_tensor(y555)
-list556=fc2_output(list_555)
-list_557=pd.DataFrame(list556)
-
-
-
+y1=[]
+for i in range(1,100):
+    gray1=cv2.resize(images[i],(224,224))
+    y1.append(gray1)
+list_ncov_k=tf.convert_to_tensor(y1)
+list1_k=fc2_output(list_ncov_k)
+pd_list_ncov_k=pd.DataFrame(list1_k)
 
 import cv2
 images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
-y777=[]
-for i in range(1,200):
-    gray=cv2.resize(images[i],(224,224))  
-    y777.append(gray)
+y1=[]
+for i in range(100,199):
+    gray1=cv2.resize(images[i],(224,224))
+    y1.append(gray1)
+list_ncov_l=tf.convert_to_tensor(y1)
+list1_l=fc2_output(list_ncov_l)
+pd_list_ncov_l=pd.DataFrame(list1_l)
 
-list777=tf.convert_to_tensor(y777)
-list778=fc2_output(list777)
-list779=pd.DataFrame(list778)
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
+y1=[]
+for i in range(199,300):
+    gray1=cv2.resize(images[i],(224,224))
+    y1.append(gray1)
+list_ncov_m=tf.convert_to_tensor(y1)
+list1_m=fc2_output(list_ncov_m)
+pd_list_ncov_m=pd.DataFrame(list1_m)
 
+pd_list_ncov=pd.concat([pd_list_ncov_k, pd_list_ncov_l,pd_list_ncov_m])
 
-first = list779.append(list_557)
+transfer_all_layers_fc2=pd.concat([pd_list_cov, pd_list_cov])
 
-###  save "first"  ###
 from google.colab import files
 
-first.to_csv('first.csv')
-files.download('first.csv')
+transfer_all_layers_fc2.to_csv('transfer_all_layers_fc2.csv')
+files.download('transfer_all_layers_fc2.csv')
+
+
+
 
 #plot the performance metrics
 history=model.fit(x=train_batches,validation_data=valid_batches,epochs=15,verbose=2)
