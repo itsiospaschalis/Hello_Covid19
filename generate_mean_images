@@ -1,0 +1,44 @@
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+y=[]
+for i in range(1,100):
+    gray=cv2.resize(images[i],(224,224))
+    img_gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)
+    y.append(img_gray)
+
+import cv2
+images1 = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+y1=[]
+for i in range(1,100):
+    gray1=cv2.resize(images1[i],(224,224))
+    img_gray1 = cv2.cvtColor(gray1, cv2.COLOR_BGR2GRAY)
+    y1.append(img_gray1)
+
+y=np.array(y)
+y1=np.array(y1)
+aaa=np.concatenate((y,y1), axis=0)
+
+from numpy import genfromtxt
+ou = genfromtxt('/content/drive/My Drive/file.csv', delimiter=',')
+ou=ou[1:,]
+
+ou=np.nan_to_num(ou)
+
+#for the first cluster
+sk=[]
+for i in range (0,198):
+  skata=aaa[i]*ou[i,1]
+  sk.append(skata)
+
+#for the second cluster
+sk=[]
+for i in range (0,198):
+  skata=aaa[i]*ou[i,2]
+  sk.append(skata)
+
+
+imgray=sum(sk)/198
+img2 = cv2.merge((imgray,imgray,imgray))
+
+
+plt.imshow((img2 * 255).astype(np.uint8))
