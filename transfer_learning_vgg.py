@@ -523,3 +523,27 @@ test_path_2='/content/drive/My Drive/test_2'
 
 test_batches_2=ImageDataGenerator(preprocessing_function=keras.applications.vgg16.preprocess_input) \
     .flow_from_directory(directory=test_path_2,target_size=(224,224),classes=['Covid','Non-Covid'],batch_size=10,shuffle=False)
+
+
+
+#run it later
+vgg16_model=keras.applications.vgg16.VGG16()
+model= Sequential()
+for layer in vgg16_model.layers[:-5]:
+    model.add(layer)
+for layer in model.layers:
+    layer.trainable=False
+model.compile(optimizer='adam', loss='categorical_crossentropy')
+
+
+
+model.add(MaxPool2D())
+model.add(Conv2D(filters=512, kernel_size=(3,3), padding="same", activation="relu"))
+model.add(MaxPool2D())
+model.add(Flatten())
+model.add(Dense(units=4096,activation="relu"))
+model.add(Dense(units=4096,activation="relu"))
+model.add(Dense(units=2, activation="softmax"))
+
+model.summary()
+
