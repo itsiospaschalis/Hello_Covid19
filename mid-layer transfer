@@ -23,3 +23,11 @@ model.add(Dense(units=4096,activation="relu"))
 model.add(Dense(units=2, activation="softmax"))
 
 model.summary()
+
+
+mid_ll=pd.concat([pd_list_cov, pd_list_ncov])
+
+from google.colab import files
+
+mid_ll.to_csv('mid_ll.csv')
+files.download('mid_ll.csv')
