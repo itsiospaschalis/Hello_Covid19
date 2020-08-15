@@ -1,0 +1,172 @@
+
+
+
+
+###
+import glob
+
+import cv2
+images = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Covid/*.png")]
+y1=[]
+for i in range(1,100):
+    gray1=cv2.resize(images[i],(224,224))
+    img_gray1 = cv2.cvtColor(gray1, cv2.COLOR_BGR2GRAY)
+    y1.append(img_gray1)
+
+y2=[]
+for i in range(100,199):
+    gray2=cv2.resize(images[i],(224,224))
+    img_gray2 = cv2.cvtColor(gray2, cv2.COLOR_BGR2GRAY)
+    y2.append(img_gray2)
+
+y3=[]
+for i in range(199,300):
+    gray3=cv2.resize(images[i],(224,224))
+    img_gray3 = cv2.cvtColor(gray3, cv2.COLOR_BGR2GRAY)
+    y3.append(img_gray3)
+
+####
+
+import cv2
+images1 = [cv2.imread(file) for file in glob.glob("/content/drive/My Drive/trainn/train/Non-Covid/*.png")]
+y4=[]
+for i in range(1,100):
+    gray4=cv2.resize(images1[i],(224,224))
+    img_gray4 = cv2.cvtColor(gray4, cv2.COLOR_BGR2GRAY)
+    y4.append(img_gray4)
+
+y5=[]
+for i in range(100,199):
+    gray5=cv2.resize(images1[i],(224,224))
+    img_gray5 = cv2.cvtColor(gray5, cv2.COLOR_BGR2GRAY)
+    y5.append(img_gray5)
+
+y6=[]
+for i in range(199,300):
+    gray6=cv2.resize(images1[i],(224,224))
+    img_gray6 = cv2.cvtColor(gray6, cv2.COLOR_BGR2GRAY)
+    y6.append(img_gray6)
+
+
+y1=np.array(y1)
+y2=np.array(y2)
+y3=np.array(y3)
+y4=np.array(y4)
+y5=np.array(y5)
+y6=np.array(y6)
+
+aaa=np.concatenate((y1,y2,y3,y4,y5,y6), axis=0)
+
+
+
+from numpy import genfromtxt
+ou = genfromtxt('/content/drive/My Drive/5_probs.csv', delimiter=',')
+ou=ou[1:,1:]
+
+ou=np.nan_to_num(ou)
+
+#for the first cluster
+sk1=[]
+for i in range (0,598):
+  skata1=aaa[i]*ou[i,0]
+  sk1.append(skata1)
+
+#for the second cluster
+sk2=[]
+for i in range (0,598):
+  skata2=aaa[i]*ou[i,1]
+  sk2.append(skata2)
+
+
+sk3=[]
+for i in range (0,598):
+  skata3=aaa[i]*ou[i,2]
+  sk3.append(skata3)
+
+sk4=[]
+for i in range (0,598):
+  skata4=aaa[i]*ou[i,3]
+  sk4.append(skata4)
+
+sk5=[]
+for i in range (0,598):
+  skata5=aaa[i]*ou[i,4]
+  sk5.append(skata5)
+
+sk6=[]
+for i in range (0,598):
+  skata6=aaa[i]*ou[i,5]
+  sk6.append(skata6)
+
+sk7=[]
+for i in range (0,598):
+  skata7=aaa[i]*ou[i,6]
+  sk7.append(skata7)
+
+sk8=[]
+for i in range (0,598):
+  skata8=aaa[i]*ou[i,7]
+  sk8.append(skata8)
+
+sk9=[]
+for i in range (0,598):
+  skata9=aaa[i]*ou[i,8]
+  sk9.append(skata9)
+
+
+imgray1=sum(sk1)/198
+img1 = cv2.merge((imgray1,imgray1,imgray1))
+
+imgray2=sum(sk2)/198
+img2 = cv2.merge((imgray2,imgray2,imgray2))
+
+imgray3=sum(sk3)/198
+img3 = cv2.merge((imgray3,imgray3,imgray3))
+
+imgray4=sum(sk4)/198
+img4 = cv2.merge((imgray4,imgray4,imgray4))
+
+imgray5=sum(sk5)/198
+img5 = cv2.merge((imgray5,imgray5,imgray5))
+
+imgray6=sum(sk6)/198
+img6 = cv2.merge((imgray6,imgray6,imgray6))
+
+imgray7=sum(sk7)/198
+img7 = cv2.merge((imgray7,imgray7,imgray7))
+
+imgray8=sum(sk8)/198
+img8 = cv2.merge((imgray8,imgray8,imgray8))
+
+imgray9=sum(sk9)/198
+img9 = cv2.merge((imgray9,imgray9,imgray9))
+plt.imshow((img1 * 255).astype(np.uint8))
+plt.imshow(imgray1)
+
+plt.imshow((img2 * 255).astype(np.uint8))
+plt.imshow(imgray2)
+plt.imshow((img3 * 255).astype(np.uint8))
+plt.imshow(imgray3)
+
+
+
+#plot them
+
+plt.imshow((img1 * 255).astype(np.uint8))
+plt.imshow(imgray1)
+plt.imshow((img2 * 255).astype(np.uint8))
+plt.imshow(imgray2)
+plt.imshow((img3 * 255).astype(np.uint8))
+plt.imshow(imgray3)
+plt.imshow((img4 * 255).astype(np.uint8))
+plt.imshow(imgray4)
+plt.imshow((img5 * 255).astype(np.uint8))
+plt.imshow(imgray5)
+plt.imshow((img6 * 255).astype(np.uint8))
+plt.imshow(imgray6)
+plt.imshow((img7 * 255).astype(np.uint8))
+plt.imshow(imgray7)
+plt.imshow((img8 * 255).astype(np.uint8))
+plt.imshow(imgray8)
+plt.imshow((img9 * 255).astype(np.uint8))
+plt.imshow(imgray9)
