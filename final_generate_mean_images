@@ -170,3 +170,15 @@ plt.imshow((img8 * 255).astype(np.uint8))
 plt.imshow(imgray8)
 plt.imshow((img9 * 255).astype(np.uint8))
 plt.imshow(imgray9)
+
+#calculate the comparative mean class (covid or non covid)
+covid=ou[1:299,1]*[1]
+covid=ou[1:299,2]*[1]
+...
+covid=ou[1:299,7]*[1]
+
+non_covid=ou[299:598,6]*[1]
+...non_covid=ou[299:598,6]*[1]
+
+sum(covid)/598
+sum(non_covid)/598
