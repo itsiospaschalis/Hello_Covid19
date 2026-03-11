@@ -1,4 +1,4 @@
-# Hello_Covid19 — COVID-19 Scan Classification Experiments
+# COVID-19 Scan Classification Experiments
 
 Repository of **machine learning experiments** for **binary image classification** (*COVID* vs *Non‑COVID*) using transfer learning, plus a few supporting exploration scripts (PCA + GMM segmentation).
 
