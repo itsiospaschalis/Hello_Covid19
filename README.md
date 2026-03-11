@@ -1,6 +1,6 @@
 # Hello_Covid19 — COVID-19 Scan Classification Experiments
 
-Portfolio-ready repository of **machine learning experiments** for **binary image classification** (*COVID* vs *Non‑COVID*) using transfer learning, plus a few supporting exploration scripts (PCA + GMM segmentation).
+Repository of **machine learning experiments** for **binary image classification** (*COVID* vs *Non‑COVID*) using transfer learning, plus a few supporting exploration scripts (PCA + GMM segmentation).
 
 > **Note**: This repo contains **research/experiment scripts** (some written in a notebook-like style) and includes **hard-coded local paths** to datasets/checkpoints that are **not** part of the repository. The README below shows how to adapt the scripts to your environment.
 
@@ -115,7 +115,7 @@ On the held‑out test set, the models achieved:
 | **F1‑score**  | 0.94 | 0.97 | **0.989** |
 | **AUC**       | 0.94 | 0.97 | **0.99** |
 
-From a portfolio perspective:
+Summary:
 
 - **Progressive model design**: each successive method improves or matches the previous one on all key metrics.
 - **Best model** (Method 3) delivers **99% accuracy** and **AUC 0.99** with **perfect precision (1.00)**, indicating very few false positives.
@@ -123,7 +123,7 @@ From a portfolio perspective:
 
 ---
 
-## Portfolio highlights
+## Highlights
 
 - **Transfer learning** approach to reduce training time and data requirements.
 - **End-to-end experimentation**: preprocessing → training → evaluation metrics → visualization.
