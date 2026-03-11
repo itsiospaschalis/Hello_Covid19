@@ -1,4 +1,3 @@
-# Covid-19 scans
 # Hello_Covid19 — COVID-19 Scan Classification Experiments
 
 Portfolio-ready repository of **machine learning experiments** for **binary image classification** (*COVID* vs *Non‑COVID*) using transfer learning, plus a few supporting exploration scripts (PCA + GMM segmentation).
@@ -100,17 +99,27 @@ python transfer_learning_vgg.py
 
 ## Results
 
-The thesis behind this project evaluated **three different methods (without fine‑tuning)**. The main performance metrics on the test set are:
+The accompanying MSc thesis evaluated **three VGG16‑based transfer learning strategies (without fine‑tuning)** for binary COVID vs Non‑COVID CT classification:
 
-| **Metric**  | **Method 1** | **Method 2** | **Method 3** |
-|------------|--------------|--------------|--------------|
+- **Method 1**: Train **only the final dense classification layer** on top of a frozen VGG16 backbone.
+- **Method 2**: Transfer learning from the **last five convolutional layers** of VGG16, adding new pooling + dense layers trained on COVID CT scans.
+- **Method 3**: A refined architecture building on Method 2, with a carefully tuned learning rate and capacity to further improve generalization.
+
+On the held‑out test set, the models achieved:
+
+| **Metric**  | **Method 1**<br/>(last layer only) | **Method 2**<br/>(last 5 conv blocks) | **Method 3**<br/>(refined architecture) |
+|------------|-------------------------------------|----------------------------------------|------------------------------------------|
 | **Accuracy**  | 0.94 | 0.97 | **0.99** |
 | **Precision** | 0.96 | 0.96 | **1.00** |
 | **Recall**    | 0.92 | 0.98 | **0.98** |
 | **F1‑score**  | 0.94 | 0.97 | **0.989** |
 | **AUC**       | 0.94 | 0.97 | **0.99** |
 
-**Method 3** achieved the best trade‑off across all metrics, with **99% accuracy**, **AUC 0.99**, and a **perfect precision of 1.00**, making it the strongest configuration among the three approaches tested in the thesis.
+From a portfolio perspective:
+
+- **Progressive model design**: each successive method improves or matches the previous one on all key metrics.
+- **Best model** (Method 3) delivers **99% accuracy** and **AUC 0.99** with **perfect precision (1.00)**, indicating very few false positives.
+- **Robust evaluation**: results are supported by confusion matrices, ROC curves and cross‑validation as documented in the thesis.
 
 ---
 
